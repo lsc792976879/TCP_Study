@@ -152,6 +152,7 @@ public class MyTCPServer
 
     static async Task GetMessage(TcpClient client)
     {
+        int count = 0;
         try
         {
             byte[] buffer = new byte[10];
@@ -172,7 +173,8 @@ public class MyTCPServer
                     if (mypackage.dataLength + MyMessagePackage.HeadLength > message.Length) break;
                     message = mypackage.ToMyPackage(message);
                     
-                    Console.WriteLine("收到了客户端的消息：" + Encoding.UTF8.GetString(mypackage.message));
+                    Console.WriteLine("收到了客户端的第{0}条消息：{1}" ,count, Encoding.UTF8.GetString(mypackage.message));
+                    count++;
                     
                     Console.WriteLine("完成拆包，剩下部分的长度：" + message.Length);
                 }
@@ -194,7 +196,7 @@ public class MyTCPServer
         myPackage.dataLength = myPackage.message.Length;
         myPackage.command = 0;
         myPackage.parameter = 0;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1000; i++)
         {
             networkStream.Write(myPackage.ToBytesStream());   
         }

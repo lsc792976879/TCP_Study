@@ -152,7 +152,7 @@ public class MyTCPClient
         myPackage.dataLength = myPackage.message.Length;
         myPackage.command = 0;
         myPackage.parameter = 0;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1000; i++)
         {
             networkStream.Write(myPackage.ToBytesStream());   
         }
@@ -180,7 +180,7 @@ public class MyTCPClient
                     if (mypackage.dataLength + MyMessagePackage.HeadLength > message.Length) break;
                     message = mypackage.ToMyPackage(message);
                     
-                    Console.WriteLine("收到了客户端的消息：" + Encoding.UTF8.GetString(mypackage.message));
+                    Console.WriteLine("收到了服务器的消息：" + Encoding.UTF8.GetString(mypackage.message));
                     
                     Console.WriteLine("完成拆包，剩下部分的长度：" + message.Length);
                 }
