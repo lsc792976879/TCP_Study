@@ -1,0 +1,15 @@
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\bin\Debug\net6.0\TCPClient.exe
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\bin\Debug\net6.0\TCPClient.deps.json
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\bin\Debug\net6.0\TCPClient.runtimeconfig.json
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\bin\Debug\net6.0\TCPClient.dll
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\bin\Debug\net6.0\TCPClient.pdb
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.csproj.AssemblyReference.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.AssemblyInfoInputs.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.AssemblyInfo.cs
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.csproj.CoreCompileInputs.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.dll
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\refint\TCPClient.dll
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.pdb
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\TCPClient.genruntimeconfig.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPClient\TCPClient\obj\Debug\net6.0\ref\TCPClient.dll
