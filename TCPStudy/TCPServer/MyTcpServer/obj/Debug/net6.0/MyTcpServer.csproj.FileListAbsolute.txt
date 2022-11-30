@@ -1,0 +1,15 @@
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\bin\Debug\net6.0\MyTcpServer.exe
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\bin\Debug\net6.0\MyTcpServer.deps.json
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\bin\Debug\net6.0\MyTcpServer.runtimeconfig.json
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\bin\Debug\net6.0\MyTcpServer.dll
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\bin\Debug\net6.0\MyTcpServer.pdb
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.csproj.AssemblyReference.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.AssemblyInfoInputs.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.AssemblyInfo.cs
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.csproj.CoreCompileInputs.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.dll
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\refint\MyTcpServer.dll
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.pdb
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\MyTcpServer.genruntimeconfig.cache
+C:\Users\lsc\Desktop\C#学习\TCPStudy\TCPServer\MyTcpServer\obj\Debug\net6.0\ref\MyTcpServer.dll
