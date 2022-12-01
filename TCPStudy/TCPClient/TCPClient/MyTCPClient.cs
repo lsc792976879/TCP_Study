@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Text;
 
 namespace TCPClient;
-
 public class MyMessagePackage
 {
     /// <summary>
@@ -12,16 +11,31 @@ public class MyMessagePackage
     /// paramter是参数信息
     /// dataLength是文件的大小
     /// </summary>
-    public const int HeadLength = 6;
+    public const int HeadLength = 7;
     public byte command;
     public byte parameter;
+    public byte isLittleEndian;
     public int dataLength; //最大允许内容的完整长度为4GB
-
+    
     
     /// <summary>
     /// message用于存该包的数据
     /// </summary>
     public byte[] message;
+
+    public MyMessagePackage()
+    {
+        this.isLittleEndian =(byte)( BitConverter.IsLittleEndian ? 1 : 0);
+    }
+
+    public MyMessagePackage(byte command, byte parameter, byte[] message)
+    {
+        this.command = command;
+        this.parameter = parameter;
+        this.message = message;
+        this.isLittleEndian =(byte)( BitConverter.IsLittleEndian ? 1 : 0);
+        this.dataLength = message.Length;
+    }
 
     /// <summary>
     /// 将头部和数据转字节流，以便封包发送
@@ -36,6 +50,7 @@ public class MyMessagePackage
             BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
             binaryWriter.Write(this.command);
             binaryWriter.Write(this.parameter);
+            binaryWriter.Write(this.isLittleEndian);
             binaryWriter.Write(this.dataLength);
             binaryWriter.Write(this.message);
             
@@ -61,7 +76,7 @@ public class MyMessagePackage
     {
         try
         {
-            if (buffer == null || buffer.Length < 6)
+            if (buffer == null || buffer.Length < MyMessagePackage.HeadLength)
             {
                 Console.WriteLine("头部没传输完，拆包失败");
                 return buffer;
@@ -69,19 +84,14 @@ public class MyMessagePackage
             
             MemoryStream memoryStream = new MemoryStream(buffer);
             BinaryReader binaryReader = new BinaryReader(memoryStream);
-            this.command = binaryReader.ReadByte();
-            this.parameter = binaryReader.ReadByte();
-            this.dataLength = binaryReader.ReadInt32();
-            int restDataLength = buffer.Length - HeadLength - this.dataLength;
-            
-            if (restDataLength < 0)
-            {
-                Console.WriteLine("正文没传输完，拆包失败");
-                return buffer;
-            }
+            for (int i = 0; i < MyMessagePackage.HeadLength; i++) binaryReader.ReadByte();
             
             this.message = binaryReader.ReadBytes(this.dataLength);
+            if (this.isLittleEndian != (byte) (BitConverter.IsLittleEndian ? 1 : 0)) Array.Reverse(message);
+            
+            int restDataLength = buffer.Length - HeadLength - this.dataLength;
             var restMessage = binaryReader.ReadBytes(restDataLength);
+            
             binaryReader.Close();
             memoryStream.Close();
             
@@ -104,7 +114,7 @@ public class MyMessagePackage
     {
         try
         {
-            if (buffer == null || buffer.Length < 6)
+            if (buffer == null || buffer.Length < MyMessagePackage.HeadLength)
             {
                 Console.WriteLine("头部没传输完，读取头部失败");
             }
@@ -112,7 +122,15 @@ public class MyMessagePackage
             BinaryReader binaryReader = new BinaryReader(memoryStream);
             this.command = binaryReader.ReadByte();
             this.parameter = binaryReader.ReadByte();
+            this.isLittleEndian = binaryReader.ReadByte();
             this.dataLength = binaryReader.ReadInt32();
+            if (this.isLittleEndian != (byte) (BitConverter.IsLittleEndian ? 1 : 0))
+            {
+                var tmp = BitConverter.GetBytes(this.dataLength);
+                Array.Reverse(tmp);
+                this.dataLength = BitConverter.ToInt32(tmp);
+            }
+            Console.WriteLine(dataLength);
             binaryReader.Close();
             memoryStream.Close();
         }
@@ -125,7 +143,6 @@ public class MyMessagePackage
     }
     
 }
-
 public class MyTCPClient
 {
     static void Main(string[] args)
@@ -146,12 +163,8 @@ public class MyTCPClient
     
     static async Task SendMessage(TcpClient client)
     {
-        MyMessagePackage myPackage = new MyMessagePackage();
+        MyMessagePackage myPackage = new MyMessagePackage(0,0,Encoding.UTF8.GetBytes("这里是客户端"));
         NetworkStream networkStream = client.GetStream();
-        myPackage.message = Encoding.UTF8.GetBytes("这里是客户端");
-        myPackage.dataLength = myPackage.message.Length;
-        myPackage.command = 0;
-        myPackage.parameter = 0;
         for (int i = 0; i < 1000; i++)
         {
             networkStream.Write(myPackage.ToBytesStream());   
