@@ -89,7 +89,6 @@ public class MyMessagePackage
             for (int i = 0; i < MyMessagePackage.HeadLength; i++) binaryReader.ReadByte();
             
             this.message = binaryReader.ReadBytes(this.dataLength);
-            if (this.isLittleEndian != (byte) (BitConverter.IsLittleEndian ? 1 : 0)) Array.Reverse(message);
             
             int restDataLength = buffer.Length - HeadLength - this.dataLength;
             var restMessage = binaryReader.ReadBytes(restDataLength);
@@ -170,7 +169,6 @@ public class MyTCPServer
 
     static async Task GetMessage(TcpClient client)
     {
-        int count = 0;
         try
         {
             byte[] buffer = new byte[10];
@@ -182,21 +180,15 @@ public class MyTCPServer
             while ((length = await fileStream.ReadAsync(buffer, 0, 10)) != 0)
             {
                 message = AppendMessage(message, 0, message.Length, buffer, 0, length);
-                Console.WriteLine("收到字节流，当前缓冲区总长度：" + message.Length);
-                
                 while (message.Length >= MyMessagePackage.HeadLength)
                 {
                     mypackage.GetHeadInfo(message);
-                    
                     if (mypackage.dataLength + MyMessagePackage.HeadLength > message.Length) break;
                     message = mypackage.ToMyPackage(message);
-                    
-                    Console.WriteLine("收到了客户端的第{0}条消息：{1}" ,count, Encoding.UTF8.GetString(mypackage.message));
-                    count++;
-                    
-                    Console.WriteLine("完成拆包，剩下部分的长度：" + message.Length);
+                    Console.WriteLine("收到了客户端的消息：{0}" , Encoding.UTF8.GetString(mypackage.message));
                 }
             }
+            
         }
         catch(Exception e)
         {

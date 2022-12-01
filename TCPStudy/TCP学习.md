@@ -595,7 +595,7 @@ binarywriter，通过把int x = 864 = 0x03 96 写入stream，把stream转为byte
 
 所以binarywriter写入，采用的小端模式
 
-在BinaryWriter.cs中搜Endian，只搜得到Write***LittleEndian的关键字，是把value作为小端写入
+在BinaryWriter.cs中搜Endian，只搜得到Write***LittleEndian的关键字，把value作为小端写入
 
 通过看底层的定义可知，调用的write是把value作为小端，Writes an [Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32?view=net-6.0) into a span of bytes, as little endian.
 
@@ -605,10 +605,23 @@ binarywriter，通过把int x = 864 = 0x03 96 写入stream，把stream转为byte
 
 
 
-补充：内联函数
 
 
+binaryread.readBytes的实现，就是直接read，不考虑端序，因此我传过来的是小端端序的，如果客户端的存储数据默认是大端端序的话，需要做个翻转
 
-binaryread.readBytes的实现，好像就是直接read，不考虑端序，因此我传过来的是小端端序的，如果客户端的是大端端序的话，就需要做个翻转
+![1669866016388](C:\Users\lsc\AppData\Roaming\Typora\typora-user-images\1669866016388.png)
 
 ![1669864052221](C:\Users\lsc\AppData\Roaming\Typora\typora-user-images\1669864052221.png)
+
+
+
+用到指针的话，需要用fixed来固化内存，避免GC导致了重定向，指针变成了野指针。
+
+
+
+short、int、long类型可以用IPAddress.HostToNetworkOrder，来进行端序的处理，
+
+
+
+??表示如果左边的不为null，使用左边的，否则用右边的，起到设置默认值的作用
+

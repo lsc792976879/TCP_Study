@@ -33,7 +33,7 @@ public class MyMessagePackage
         this.command = command;
         this.parameter = parameter;
         this.message = message;
-        this.isLittleEndian =(byte)( BitConverter.IsLittleEndian ? 1 : 0);
+        this.isLittleEndian = 0; //TODO:修改回(byte)( BitConverter.IsLittleEndian ? 1 : 0);
         this.dataLength = message.Length;
     }
 
@@ -51,6 +51,15 @@ public class MyMessagePackage
             binaryWriter.Write(this.command);
             binaryWriter.Write(this.parameter);
             binaryWriter.Write(this.isLittleEndian);
+            
+            //TODO:测试，强行转为大端存储，把int反过来,之后这里删掉
+            if (this.isLittleEndian != (byte) (BitConverter.IsLittleEndian ? 1 : 0))
+            {
+                var tmp = BitConverter.GetBytes(this.dataLength);
+                Array.Reverse(tmp);
+                this.dataLength = BitConverter.ToInt32(tmp);
+            }
+            
             binaryWriter.Write(this.dataLength);
             binaryWriter.Write(this.message);
             
@@ -130,7 +139,6 @@ public class MyMessagePackage
                 Array.Reverse(tmp);
                 this.dataLength = BitConverter.ToInt32(tmp);
             }
-            Console.WriteLine(dataLength);
             binaryReader.Close();
             memoryStream.Close();
         }
@@ -157,17 +165,24 @@ public class MyTCPClient
         
         Task newSendTask = SendMessage(tcpClient);
         Task newGetTask = GetMessage(tcpClient);
-        for(int i = 0; i < 100; i++) Thread.Sleep(1000);
+        
+        List<Task> taskList = new List<Task>();
+        taskList.Add(newSendTask);
+        taskList.Add(newSendTask);
+        Task.WaitAll(taskList.ToArray());
+        
         tcpClient.Close();
     }
     
     static async Task SendMessage(TcpClient client)
     {
-        MyMessagePackage myPackage = new MyMessagePackage(0,0,Encoding.UTF8.GetBytes("这里是客户端"));
+        char[] tmp = new char[] {'a','b','c','d','e','f','g'};
         NetworkStream networkStream = client.GetStream();
+        
         for (int i = 0; i < 1000; i++)
         {
-            networkStream.Write(myPackage.ToBytesStream());   
+            MyMessagePackage myPackage = new MyMessagePackage(0,0,Encoding.UTF8.GetBytes("这里是客户端")); 
+            await networkStream.WriteAsync(myPackage.ToBytesStream());   
         }
     }
     
@@ -184,7 +199,6 @@ public class MyTCPClient
             while ((length = await fileStream.ReadAsync(buffer, 0, 10)) != 0)
             {
                 message = AppendMessage(message, 0, message.Length, buffer, 0, length);
-                Console.WriteLine("收到字节流，当前缓冲区总长度：" + message.Length);
                 
                 while (message.Length >= MyMessagePackage.HeadLength)
                 {
@@ -195,7 +209,6 @@ public class MyTCPClient
                     
                     Console.WriteLine("收到了服务器的消息：" + Encoding.UTF8.GetString(mypackage.message));
                     
-                    Console.WriteLine("完成拆包，剩下部分的长度：" + message.Length);
                 }
             }
         }
